@@ -5,13 +5,23 @@
 }
 
 #canvas {
+    max-width: 100%;
+    max-height: 100%;
+
     background-color: #f0f0f0;
-    border: 5px solid green;
-    display: block;
-    left: 50%;
-    margin: 0 auto;
+    border: 10px solid green;
+    border-radius: 8px;
+
     position: absolute;
+    left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
 
+}
+
+#msgPanel {
+    text-align: center;
+    display: block;
+    width: 100%;
+    font-size: 60px;
 }
