@@ -9,7 +9,7 @@ export class Piece {
   }
 
   color() {
-    return this.player ? "blue" : "yellow";
+    return this.player ? "#2222EE" : "#FFD700";
   }
 
   background() {
