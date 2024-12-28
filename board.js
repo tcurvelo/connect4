@@ -45,11 +45,16 @@ export class Board {
       let col = Math.floor((x / this.width) * this.cols);
       this.input.clicked = [];
 
+      let colFull = true;
       for (let j = 0; j < this.rows; j++) {
         if (this.pieces[col][j] === undefined) {
           this.pieces[col][j] = new Piece(this.currentPlayer, false);
+          colFull = false;
           break;
         }
+      }
+      if (colFull) {
+        return;
       }
       // Check for a win
       let winnerRow = this.checkForWin();
