@@ -8,6 +8,10 @@ window.addEventListener("load", function () {
   const msgPanel = document.getElementById("msgPanel");
   const board = new Board(canvas, 7, 6, ctx, msgPanel);
 
+  document.getElementById("reset").addEventListener("click", () => {
+    board.reset();
+  });
+
   function animate(timestamp) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     board.update();

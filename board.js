@@ -15,16 +15,11 @@ export class Board {
     this.rows = rows;
     this.ctx = ctx;
     this.msgPanel = msgPanel;
-    this.restart();
-    this.columns = [];
-    this.done = false;
-    this.currentPlayer = players.YELLOW;
+
     this.messageHandler = new MessageHandler(
       navigator.language || navigator.userLanguage
     );
-
-    console.log(this.messageHandler);
-
+    this.columns = [];
     for (let i = 0; i < this.cols; i++) {
       let column = new Path2D();
       column.rect(
@@ -36,11 +31,14 @@ export class Board {
       this.columns.push(column);
     }
     this.input = new InputHandler(canvas);
+    this.reset();
   }
 
-  restart() {
+  reset() {
     this.freeSpots = this.cols * this.rows;
     this.pieces = Array.from(Array(this.cols), () => Array(this.rows));
+    this.currentPlayer = players.YELLOW;
+    this.done = false;
   }
 
   update() {
