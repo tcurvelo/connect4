@@ -15,8 +15,7 @@ export class Board {
     this.rows = rows;
     this.ctx = ctx;
     this.msgPanel = msgPanel;
-
-    this.pieces = Array.from(Array(this.cols), () => Array(this.rows));
+    this.restart();
     this.columns = [];
     this.done = false;
     this.currentPlayer = players.YELLOW;
@@ -39,8 +38,17 @@ export class Board {
     this.input = new InputHandler(canvas);
   }
 
+  restart() {
+    this.freeSpots = this.cols * this.rows;
+    this.pieces = Array.from(Array(this.cols), () => Array(this.rows));
+  }
+
   update() {
-    if (!this.done && this.input.clicked.length > 0) {
+    if (this.done) {
+      return;
+    }
+
+    if (this.input.clicked.length > 0) {
       let x = this.input.clicked[0];
       let col = Math.floor((x / this.width) * this.cols);
       this.input.clicked = [];
@@ -48,6 +56,7 @@ export class Board {
       let colFull = true;
       for (let j = 0; j < this.rows; j++) {
         if (this.pieces[col][j] === undefined) {
+          this.freeSpots--;
           this.pieces[col][j] = new Piece(this.currentPlayer, false);
           colFull = false;
           break;
@@ -63,28 +72,27 @@ export class Board {
           this.pieces[x][y].win();
         }
         this.done = true;
-        console.log("Player " + this.currentPlayer + " wins!");
+        if (this.currentPlayer === players.YELLOW) {
+          this.setMessage(this.messageHandler.YELLOW_WON);
+        } else {
+          this.setMessage(this.messageHandler.BLUE_WON);
+        }
+        return;
+      } else if (!this.freeSpots) {
+        this.done = true;
+        this.setMessage(this.messageHandler.DRAW);
+        return;
       }
 
       // Update the current player
-      if (!this.done) {
-        this.currentPlayer =
-          (this.currentPlayer + 1) % Object.keys(players).length;
-      }
+      this.currentPlayer =
+        (this.currentPlayer + 1) % Object.keys(players).length;
     }
 
-    if (this.done) {
-      if (this.currentPlayer === players.YELLOW) {
-        this.setMessage(this.messageHandler.YELLOW_WON);
-      } else {
-        this.setMessage(this.messageHandler.BLUE_WON);
-      }
+    if (this.currentPlayer === players.YELLOW) {
+      this.setMessage(this.messageHandler.YELLOW_TIME);
     } else {
-      if (this.currentPlayer === players.YELLOW) {
-        this.setMessage(this.messageHandler.YELLOW_TIME);
-      } else {
-        this.setMessage(this.messageHandler.BLUE_TIME);
-      }
+      this.setMessage(this.messageHandler.BLUE_TIME);
     }
   }
 
