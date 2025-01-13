@@ -2,8 +2,8 @@ import { Board } from "./board.js";
 
 window.addEventListener("load", function () {
   const canvas = document.getElementById("canvas");
-  canvas.width = 700;
-  canvas.height = 600;
+  canvas.width = Math.min(this.document.documentElement.clientWidth, 700);
+  canvas.height = (canvas.width / 7) * 6;
   const ctx = canvas.getContext("2d");
   const msgPanel = document.getElementById("msgPanel");
   const board = new Board(canvas, 7, 6, ctx, msgPanel);
